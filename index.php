@@ -36,3 +36,54 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = "Error: " . $e->getMessage();
     }
 }
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Password Manager</title>
+        <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <button class= "refresh-btn" onclick= "window.location.reload()">Refresh Page</button>
+    <?php if ($message): ?>
+        <div class="message"><?php echo htmlspecialchars($message); ?></div>
+    <?php endif; ?>
+    <div class= "form-container">
+        <h2>Search Passwords</h2>
+        <form method="POST">
+            <input type="hidden" name="action" value="search">
+            <input type="text" name="searchTerm" placeholder="Enter search term" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class= "form-container">
+        <h2>Add New Password</h2>
+        <form method="POST">
+            <input type="hidden" name="action" value="insert">
+            <input type="text" name="websiteName" placeholder="Website Name" required>
+            <input type="url" name="websiteUrl" placeholder="Website URL" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <textarea name="comment" placeholder="Comments"></textarea>
+            <button type="submit">Add Password</button>
+        </form>
+    </div>
+    <div class= "form-container">
+        <h2>Update Password</h2>
+        <form method="POST">
+            <input type="hidden" name="action" value="update">
+            <input type="text" name="websiteName" placeholder="Website Name" required>
+            <input type="password" name="newPassword" placeholder="New Password" required>
+            <button type="submit">Update Password</button>
+        </form>
+    </div>
+    <div class= "form-container">
+        <h2>Delete Password</h2>
+        <form method="POST">
+            <input type="hidden" name="action" value="delete">
+            <input type="text" name="websiteName" placeholder="Website Name" required>
+            <button type="submit">Delete Password</button>
+        </form>
+    </div>
