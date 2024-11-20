@@ -69,3 +69,26 @@ function insertPassword($websiteName, $websiteUrl, $email, $username, $password,
         throw $e;
     }
 }
+
+function updatePassword($websiteName, $newPassword) {
+    $pdo = connectDB();
+    $query = "UPDATE Passwords p
+              JOIN Websites w ON p.website_id = w.website_id
+              SET p.enc_password = ?
+              WHERE w.website_name = ?";
+
+    $statement = $pdo->prepare($query);
+    return $statement->execute([$newPassword, $websiteName]);
+}
+
+function deletePassword($websiteName) {
+    $pdo = connectDB();
+    $query = "DELETE p FROM Passwords p
+              JOIN Websites w ON p.website_id = w.website_id
+              WHERE w.website_name = ?";
+
+    $statement = $pdo->prepare($query);
+    return $statement->execute([$websiteName]);
+}
+?>
+
