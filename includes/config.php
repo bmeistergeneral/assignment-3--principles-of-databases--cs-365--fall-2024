@@ -1,5 +1,6 @@
 <?php
 
-const DBNAME = "student_passwords";
-const DBHOST = "localhost";
-const DBUSER = "passwords_user";
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'student_passwords');
+define('DB_USER', 'passwords_user');
+
