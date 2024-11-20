@@ -53,6 +53,26 @@ insert into Passwords (user_id, website_id, enc_password, comment)
 values
 (1, 1, 'google123', 'My Google account'),
 (1, 2, 'facebook149', 'My Facebook login'),
-(2, 3, 'forthegram789', 'Code repository access'),
-(3, 1, 'googlepwd', 'Work email account'),
+(2, 3, 'forthegram789', 'Social media IG'),
+(3, 1, 'googlepwd', 'Just a Google account'),
 (2, 2, 'fblogin756', 'Personal Facebook');
+
+SELECT w.website_name, w.website_url, u.username, u.email,
+       p.enc_password, p.comment, p.create_time
+FROM Passwords p
+JOIN Users u ON p.user_id = u.user_id
+JOIN Websites w ON p.website_id = w.website_id
+WHERE u.username = 'bmeisteriscool';
+
+-- UPDATE example
+UPDATE Passwords p
+JOIN Websites w ON p.website_id = w.website_id
+SET p.enc_password = 'newpassword123'
+WHERE w.website_name = 'Google'
+AND p.user_id = (SELECT user_id FROM Users WHERE username = 'bjohnsonFTW');
+
+-- DELETE example
+DELETE p FROM Passwords p
+JOIN Websites w ON p.website_id = w.website_id
+WHERE w.website_name = 'Facebook'
+AND p.user_id = (SELECT user_id FROM Users WHERE username = 'dheinen88');
