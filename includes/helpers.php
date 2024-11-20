@@ -27,3 +27,45 @@ function searchPasswords($searchTerm) {
     $statement->execute([$searchPattern, $searchPattern, $searchPattern, $searchPattern]);
     return $statement->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function insertPassword($websiteName, $websiteUrl, $email, $username, $password, $comment) {
+    $pdo = connectDB();
+
+    try {
+        $pdo->beginTransaction();
+
+        // Website insert
+        $statement = $pdo->prepare("INSERT IGNORE INTO Websites (website_name, website_url) VALUES (?, ?)");
+        $statement->execute([$websiteName, $websiteUrl]);
+
+        $websiteId = $pdo->lastInsertId();
+        if (!$websiteId) {
+            $statement = $pdo->prepare("SELECT website_id FROM Websites WHERE website_name = ?");
+            $statement->execute([$websiteName]);
+            $websiteId = $statement->fetchColumn();
+        }
+
+        // User insert
+        $statement = $pdo->prepare("INSERT IGNORE INTO Users (username, email, first_name, last_name)
+                              VALUES (?, ?, '', '')");
+        $statement->execute([$username, $email]);
+
+        $userId = $pdo->lastInsertId();
+        if (!$userId) {
+            $statement = $pdo->prepare("SELECT user_id FROM Users WHERE username = ?");
+            $statement->execute([$username]);
+            $userId = $statement->fetchColumn();
+        }
+
+        // Password insert
+        $statement = $pdo->prepare("INSERT INTO Passwords (user_id, website_id, enc_password, comment)
+                              VALUES (?, ?, ?, ?)");
+        $statement->execute([$userId, $websiteId, $password, $comment]);
+
+        $pdo->commit();
+        return true;
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        throw $e;
+    }
+}
