@@ -87,3 +87,36 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit">Delete Password</button>
         </form>
     </div>
+    <?php if (isset($results)): ?>
+        <div class="results">
+            <h2>Search Results</h2>
+            <?php if (empty($results)): ?>
+                <p>No results found.</p>
+            <?php else: ?>
+                <table>
+                    <tr>
+                        <th>Website</th>
+                        <th>URL</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Comment</th>
+                        <th>Created</th>
+                    </tr>
+                    <?php foreach ($results as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['website_name']); ?></td>
+                            <td><?php echo htmlspecialchars($row['website_url']); ?></td>
+                            <td><?php echo htmlspecialchars($row['username']); ?></td>
+                            <td><?php echo htmlspecialchars($row['email']); ?></td>
+                            <td><?php echo htmlspecialchars($row['password']); ?></td>
+                            <td><?php echo htmlspecialchars($row['comment']); ?></td>
+                            <td><?php echo htmlspecialchars($row['create_time']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+</body>
+</html>
